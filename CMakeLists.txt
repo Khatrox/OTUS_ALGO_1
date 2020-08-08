@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.14)
 project(TestTask)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/googletest)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/google_test)
 
-add_executable(TestTask ${CMAKE_SOURCE_DIR}/src/main.cpp)
+add_executable(TestTask ${CMAKE_SOURCE_DIR}/src)
 
 set_target_properties(TestTask
                       PROPERTIES

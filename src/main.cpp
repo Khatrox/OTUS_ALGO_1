@@ -65,13 +65,15 @@ TEST_P(TestTaskFixture, CheckTask)
 
 int main(int argc, char** argv)
 {
+
     if(argc < 3)
     {
         return EXIT_FAILURE;
     }
-
+ 
     ::Test::testTask.SetTestDir(argv[1]);
     testing::InitGoogleTest(&argc, argv);
+
 
     return RUN_ALL_TESTS();
 }
