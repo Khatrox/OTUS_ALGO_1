@@ -9,7 +9,6 @@
 #include <memory>
 #include <sys/stat.h>
 #include "Task.h"
-#include <get_cmake_source_dir.h>
 
 struct TestTask
 {

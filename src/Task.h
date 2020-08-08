@@ -44,7 +44,7 @@ private:
 
     std::size_t GetLuckyTickets(std::size_t N)
     {
-        std::size_t check_part = std::pow(10,N);
+        auto check_part = static_cast<std::size_t>(std::pow(10,N));
 
         std::vector<std::size_t> v_sums;
         const std::size_t sums = (N * 9) + 1;
