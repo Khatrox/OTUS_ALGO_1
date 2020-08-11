@@ -80,6 +80,7 @@ int main(int argc, char** argv)
         std::cout << "For now available TaskNames are:\n";
         std::cout << "1.String\n";
         std::cout << "2.LuckyTickets\n";
+        return EXIT_FAILURE;
     }
 
     TestInputOutputTaker::SetInput(GoogleTestIn::testInput);

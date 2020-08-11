@@ -4,4 +4,4 @@
 
 #cmakedefine TESTS_FOLDER "@TESTS_FOLDER@"
 
-#endif^
+#endif
