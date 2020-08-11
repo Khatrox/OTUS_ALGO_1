@@ -3,7 +3,19 @@ project(TestTask)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/google_test)
 
-add_executable(TestTask ${CMAKE_SOURCE_DIR}/src)
+set (TESTS_FOLDER "${CMAKE_SOURCE_DIR}/Tests")
+configure_file(test_folder_define.h.in test_folder_define.h)
+
+set (SOURCE ${CMAKE_SOURCE_DIR}/src/)
+add_executable(TestTask 
+		${SOURCE}main.cpp
+		${SOURCE}TestInputOutputTaker.h
+		${SOURCE}TestInputOutputTaker.cpp
+		${SOURCE}Task.h
+		${SOURCE}TaskFactory.h
+		${SOURCE}TaskFactory.cpp
+		${SOURCE}exist_file.h
+		)
 
 set_target_properties(TestTask
                       PROPERTIES
@@ -14,6 +26,7 @@ set_target_properties(TestTask
 target_include_directories(TestTask
                            PRIVATE
                            ${CMAKE_SOURCE_DIR}/google_test
+					       ${CMAKE_BINARY_DIR}
                             )
 
 target_link_libraries(TestTask

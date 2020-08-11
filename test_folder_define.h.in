@@ -1,0 +1,7 @@
+
+#ifndef GET_CMAKE_SOURCE_DIR_H
+#define GET_CMAKE_SOURCE_DIR_H
+
+#cmakedefine TESTS_FOLDER "@TESTS_FOLDER@"
+
+#endif^

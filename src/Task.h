@@ -6,10 +6,13 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <memory>
 
 struct ITask
 {
     virtual std::string Run(const std::vector<std::string>& In) = 0;
+    virtual ~ITask() = default;
+    virtual std::unique_ptr<ITask> Clone() = 0;
 };
 
 struct StringLength: public ITask
@@ -17,6 +20,11 @@ struct StringLength: public ITask
     std::string Run(const std::vector<std::string>& v) override
     {
         return std::to_string(v[0].size());
+    }
+
+    std::unique_ptr<ITask> Clone() override
+    {
+        return std::make_unique<StringLength>();
     }
 };
 
@@ -26,6 +34,11 @@ struct LuckyTickets: public ITask
     {
         auto N = std::stoi(v[0]);
         return std::to_string(GetLuckyTickets(N));
+    }
+
+    std::unique_ptr<ITask> Clone() override
+    {
+        return std::make_unique<LuckyTickets>();
     }
 
 private:
@@ -44,7 +57,7 @@ private:
 
     std::size_t GetLuckyTickets(std::size_t N)
     {
-        auto check_part = static_cast<std::size_t>(std::pow(10,N));
+        std::size_t check_part = static_cast<std::size_t>(std::pow(10,N));
 
         std::vector<std::size_t> v_sums;
         const std::size_t sums = (N * 9) + 1;

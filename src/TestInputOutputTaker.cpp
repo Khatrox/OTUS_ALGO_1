@@ -2,24 +2,17 @@
 // Created by xMellox on 04-Aug-20.
 //
 
-#include "TestTask.h"
+#include "TestInputOutputTaker.h"
 #include <fstream>
+#include <test_folder_define.h>
 #include "exist_file.h"
 
-void TestTask::SetTestDir(const std::string& Path)
+
+void TestInputOutputTaker::SetInput(test_input &input)
 {
-
-    TestDir = Path;
-    if(TestDir.back() != '/')
-    {
-        TestDir += '/';
-    }
-
     std::ifstream TestDirFile;
     std::size_t i{};
-
     std::string test_in = GetInTestFile(i);
-    std::string test_out = GetOutTestFile(i);
 
     while(exist_file(test_in))
     {
@@ -31,43 +24,55 @@ void TestTask::SetTestDir(const std::string& Path)
         {
             v_lines.push_back(std::move(in_line));
         }
-        
-        TaskIn.push_back(std::move(v_lines));
 
-        TestDirFile.close();
-
-        TestDirFile.open(test_out);
-        std::string out_line;
-        std::getline(TestDirFile, out_line);
-
-        TaskOutput.push_back(std::move(out_line));
+        input.push_back(std::move(v_lines));
         TestDirFile.close();
 
         ++i;
         test_in = GetInTestFile(i);
+    }
+}
+
+void TestInputOutputTaker::SetOutput(test_output &output)
+{
+    std::ifstream TestDirFile;
+    std::size_t i{};
+
+    std::string test_out = GetOutTestFile(i);
+
+    while(exist_file(test_out))
+    {
+        TestDirFile.open(test_out);
+        std::string out_line;
+        std::getline(TestDirFile, out_line);
+
+        output.push_back(std::move(out_line));
+        TestDirFile.close();
+
+        ++i;
         test_out = GetOutTestFile(i);
     }
 
 }
 
-
-std::string TestTask::GetTestFile(std::size_t id, const std::string &conclude_with) const
+std::string TestInputOutputTaker::GetTestFile(std::size_t id, const std::string &conclude_with)
 {
-    std::string r{TestDir};
-    r += "test.";
+    std::string r{TESTS_FOLDER};
+    r += "/";
+    r += __argv[1];
+    r += "/test.";
     r += std::to_string(id);
     r += "." + conclude_with;
 
     return r;
 }
 
-std::string TestTask::GetInTestFile(std::size_t id) const
+std::string TestInputOutputTaker::GetInTestFile(std::size_t id)
 {
   return GetTestFile(id, "in");
 }
 
-std::string TestTask::GetOutTestFile(std::size_t id) const
+std::string TestInputOutputTaker::GetOutTestFile(std::size_t id)
 {
     return GetTestFile(id, "out");
 }
-
