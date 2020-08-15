@@ -8,4 +8,4 @@ How to run project:
 6. cmake ..
 7. cmake --build .
 8.  Run TestTask binary module with TaskName
-    String or LuckyTickets
+    String or LuckyTickets and TestDirName
