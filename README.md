@@ -1,4 +1,3 @@
-In future will be added more flexible test system than now.
 
 How to run project:
 1. git clone https://github.com/Khatrox/OTUS_ALGO_1.git
