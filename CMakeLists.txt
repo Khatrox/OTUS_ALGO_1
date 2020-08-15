@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.14)
 project(TestTask)
 
+if(WIN32)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/google_test)
 
 set (TESTS_FOLDER "${CMAKE_SOURCE_DIR}/Tests")

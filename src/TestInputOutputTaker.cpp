@@ -8,6 +8,13 @@
 #include "exist_file.h"
 
 
+std::string TestInputOutputTaker::TaskName;
+
+void TestInputOutputTaker::SetTaskName(const std::string& NewTaskName)
+{
+	TaskName = NewTaskName;
+}
+
 void TestInputOutputTaker::SetInput(test_input &input)
 {
     std::ifstream TestDirFile;
@@ -59,7 +66,7 @@ std::string TestInputOutputTaker::GetTestFile(std::size_t id, const std::string 
 {
     std::string r{TESTS_FOLDER};
     r += "/";
-    r += __argv[1];
+    r += TaskName;
     r += "/test.";
     r += std::to_string(id);
     r += "." + conclude_with;

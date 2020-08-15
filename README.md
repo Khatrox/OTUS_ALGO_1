@@ -6,7 +6,7 @@ How to run project:
 3. git submodule update --init --recursive
 4. mkdir build
 5. cd build
-6. cmake .. -G "MinGW Makefiles"
+6. cmake ..
 7. cmake --build .
 8.  Run TestTask binary module with TaskName
     String or LuckyTickets

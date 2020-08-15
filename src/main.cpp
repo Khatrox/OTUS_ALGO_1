@@ -13,7 +13,7 @@ struct TestTaskFixture : testing::TestWithParam<std::vector<std::string>>
 {
     static void SetUpTestSuite()
     {
-        task = TaskFactory::Instance().CreateTask(__argv[1]);
+        task = TaskFactory::Instance().CreateTask(TaskName);
         TestInputOutputTaker::SetOutput(testOutput);
         v_output_it = testOutput.begin();
     }
@@ -31,19 +31,24 @@ struct TestTaskFixture : testing::TestWithParam<std::vector<std::string>>
 
         return r;
     }
+    
+    static void SetTaskName(const std::string& NewTaskName)
+    {
+    	TaskName = NewTaskName;
+    }
 
 private:
 
     static std::unique_ptr<ITask> task;
     static test_output testOutput;
     static std::vector<std::string>::iterator v_output_it;
-
+    static std::string TaskName;
 };
 
 std::unique_ptr<ITask> TestTaskFixture::task = nullptr;
 test_output TestTaskFixture::testOutput;
 std::vector<std::string>::iterator TestTaskFixture::v_output_it;
-
+std::string TestTaskFixture::TaskName;
 
 INSTANTIATE_TEST_SUITE_P(TestInstantiation,
                          TestTaskFixture,
@@ -83,6 +88,8 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
+    TestTaskFixture::SetTaskName(argv[1]);
+    TestInputOutputTaker::SetTaskName(argv[1]);
     TestInputOutputTaker::SetInput(GoogleTestIn::testInput);
     testing::InitGoogleTest(&argc, argv);
 
