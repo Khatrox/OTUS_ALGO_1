@@ -15,16 +15,17 @@ using test_output = std::vector<std::string>;
 
 struct TestInputOutputTaker
 {
-    static void SetTaskName(const std::string& NewTaskName);
+    static void SetTestDir(const std::string& NewTestDir);
     static void SetInput(test_input& input);
     static void SetOutput(test_output& output);
+    static bool DoesTestDirExist(const std::string& TestNameDir) noexcept;
 
 private:
     
     static std::string GetTestFile(std::size_t id, const std::string& conclude_with);
     static std::string GetInTestFile(std::size_t id);
     static std::string GetOutTestFile(std::size_t id);
-    static std::string TaskName;
+    static std::string TestDir;
 };
 
 #endif //TESTTASK_TESTTASK_H

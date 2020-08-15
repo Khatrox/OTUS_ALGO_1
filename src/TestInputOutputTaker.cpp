@@ -8,11 +8,11 @@
 #include "exist_file.h"
 
 
-std::string TestInputOutputTaker::TaskName;
+std::string TestInputOutputTaker::TestDir;
 
-void TestInputOutputTaker::SetTaskName(const std::string& NewTaskName)
+void TestInputOutputTaker::SetTestDir(const std::string& NewTestDir)
 {
-	TaskName = NewTaskName;
+	TestDir = NewTestDir;
 }
 
 void TestInputOutputTaker::SetInput(test_input &input)
@@ -66,7 +66,7 @@ std::string TestInputOutputTaker::GetTestFile(std::size_t id, const std::string 
 {
     std::string r{TESTS_FOLDER};
     r += "/";
-    r += TaskName;
+    r += TestDir;
     r += "/test.";
     r += std::to_string(id);
     r += "." + conclude_with;
@@ -83,3 +83,14 @@ std::string TestInputOutputTaker::GetOutTestFile(std::size_t id)
 {
     return GetTestFile(id, "out");
 }
+
+bool TestInputOutputTaker::DoesTestDirExist(const std::string& TestNameDir) noexcept
+{
+	std::ifstream TestDirFile;
+	std::string TestFolder{TESTS_FOLDER};
+	TestFolder += "/" + TestNameDir;
+	TestDirFile.open(TestFolder);
+	
+	return TestDirFile.is_open();	
+}
+

@@ -6,19 +6,10 @@
 #define TESTTASK_TASKFACTORY_H
 #include "Task.h"
 #include <memory>
-#include <map>
 
-struct TaskFactory
+struct ITaskFactory
 {
-
-    static TaskFactory& Instance();
-    std::unique_ptr<ITask> CreateTask(const std::string& TaskName);
-
-private:
-    std::map<std::string, ITask*> TaskMap;
-    TaskFactory();
-    ~TaskFactory();
+    virtual ~ITaskFactory() = default;
+    virtual std::unique_ptr<ITask> CreateTask(const std::string& TaskName) = 0;
 };
-
-
 #endif //TESTTASK_TASKFACTORY_H

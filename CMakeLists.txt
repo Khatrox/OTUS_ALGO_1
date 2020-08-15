@@ -3,7 +3,7 @@ project(TestTask)
 
 if(WIN32)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-endif
+endif()
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/google_test)
 
@@ -17,7 +17,8 @@ add_executable(TestTask
 		${SOURCE}TestInputOutputTaker.cpp
 		${SOURCE}Task.h
 		${SOURCE}TaskFactory.h
-		${SOURCE}TaskFactory.cpp
+		${SOURCE}FirstAssignmentFactory.h
+		${SOURCE}FirstAssignmentFactory.cpp
 		${SOURCE}exist_file.h
 		)
 
@@ -29,12 +30,15 @@ set_target_properties(TestTask
 
 target_include_directories(TestTask
                            PRIVATE
+                           ${SOURCE}
                            ${CMAKE_SOURCE_DIR}/google_test
-					       ${CMAKE_BINARY_DIR}
+			    ${CMAKE_BINARY_DIR}
                             )
 
 target_link_libraries(TestTask
                       PRIVATE
                       gtest
                       gtest_main
+                      gmpxx
+                      gmp
                       )

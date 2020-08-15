@@ -3,6 +3,7 @@
 #include "Task.h"
 #include "TaskFactory.h"
 #include <gtest/gtest.h>
+#include "FirstAssignmentFactory.h"
 
 namespace GoogleTestIn
 {
@@ -11,13 +12,6 @@ namespace GoogleTestIn
 
 struct TestTaskFixture : testing::TestWithParam<std::vector<std::string>>
 {
-    static void SetUpTestSuite()
-    {
-        task = TaskFactory::Instance().CreateTask(TaskName);
-        TestInputOutputTaker::SetOutput(testOutput);
-        v_output_it = testOutput.begin();
-    }
-
     std::string RunTask()
     {
         return task->Run(GetParam());
@@ -32,9 +26,11 @@ struct TestTaskFixture : testing::TestWithParam<std::vector<std::string>>
         return r;
     }
     
-    static void SetTaskName(const std::string& NewTaskName)
+    static void Init(std::unique_ptr<ITask> ParamTask)
     {
-    	TaskName = NewTaskName;
+    	 task = std::move(ParamTask);
+        TestInputOutputTaker::SetOutput(testOutput);
+        v_output_it = testOutput.begin();
     }
 
 private:
@@ -64,34 +60,48 @@ TEST_P(TestTaskFixture, CheckTask)
     ASSERT_STREQ(output.c_str(), GetOutput().c_str());
 }
 
-bool DoesTaskExist(const std::string& TaskName)
+bool DoesTaskExist(ITaskFactory* TaskFactory, const std::string& TaskName)
 {
-    return (TaskFactory::Instance().CreateTask(TaskName)) != nullptr;
+    return (TaskFactory->CreateTask(TaskName)) != nullptr;
+}
+
+int RunTestMachine(std::unique_ptr<ITaskFactory> TaskFactory, int argc, char** argv)
+{
+    
+    if(argc < 3)
+    {
+        std::cout << "Here is write template [TaskName] [TestDirName]\n";
+
+        return EXIT_FAILURE;
+    }
+
+    if(!DoesTaskExist(TaskFactory.get(),argv[1]))
+    {
+        std::cout << "Invalid task.\n";
+        return EXIT_FAILURE;
+    }
+    
+    if(!TestInputOutputTaker::DoesTestDirExist(argv[2]))
+    {
+    	std::cout << "Invalid dir.\n";
+    	return EXIT_FAILURE;
+    }
+    
+    TestInputOutputTaker::SetTestDir(argv[2]);
+    TestInputOutputTaker::SetInput(GoogleTestIn::testInput);
+    
+    auto Task = TaskFactory->CreateTask(argv[1]);
+    TestTaskFixture::Init(std::move(Task));
+    
+    testing::InitGoogleTest(&argc, argv);
+    
+    return  RUN_ALL_TESTS();
 }
 
 int main(int argc, char** argv)
 {
 
-    if(argc < 2)
-    {
-        std::cout << "You forgot pass TaskName\n";
-
-        return EXIT_FAILURE;
-    }
-
-    if(!DoesTaskExist(argv[1]))
-    {
-        std::cout << "Invalid task.\n";
-        std::cout << "For now available TaskNames are:\n";
-        std::cout << "1.String\n";
-        std::cout << "2.LuckyTickets\n";
-        return EXIT_FAILURE;
-    }
-
-    TestTaskFixture::SetTaskName(argv[1]);
-    TestInputOutputTaker::SetTaskName(argv[1]);
-    TestInputOutputTaker::SetInput(GoogleTestIn::testInput);
-    testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
+   auto Factory = std::make_unique<FirstAssignmentFactory>();
+   
+   return RunTestMachine(std::move(Factory),argc, argv);
 }
